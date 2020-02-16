@@ -3,11 +3,9 @@ import classes from './Burger.module.css'
 import BurgerIngredient from './BurgerIngredient/BurgerIngredient'
 import { store } from '../../store/store'
 
-const Burger =(props) =>{
+const Burger =() =>{
     const {state} = useContext(store);
     const ingredients = state.ingredients
-    console.log('test')
-    console.log(ingredients)
     let items = Object.keys(ingredients)
                     .map((igkey)=>{
                         return [...Array(ingredients[igkey])].map((_,i)=>{
@@ -20,8 +18,6 @@ const Burger =(props) =>{
      if(items.length === 0){
             items = <p>Please add some ingredients!</p>
      }             
-    console.log(items)
-    console.log(ingredients)
     return(
         <div className ={classes.Burger}>
                 <BurgerIngredient type ='BreadTop' ></BurgerIngredient>

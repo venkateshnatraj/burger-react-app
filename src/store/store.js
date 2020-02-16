@@ -14,13 +14,15 @@ const StateProvider = ( { children } ) => {
         const newState = {...state.ingredients, ...action.payload}
         return newState;
       case 'AddIngredients':
-        console.log(state.ingredients)
-           let ss = state.ingredients[action.payload] + 1
-           let ssd =  { ...state.ingredients }
-           ssd[action.payload] = ss
-          const newState1 = { ...state.ingredients, ...ssd}
-          console.log(newState1)
-          return newState1;
+           let add = state.ingredients[action.payload] + 1
+           let  addState =  { ...state }
+           addState.ingredients[action.payload] = add
+           return { ...state.ingredients, ...addState }
+      case 'RemoveIngredients':
+            let remove = state.ingredients[action.payload] !== 0 ? state.ingredients[action.payload] - 1 : 0
+            let removeState=  { ...state }
+            removeState.ingredients[action.payload] = remove
+           return { ...state.ingredients, ...removeState}
       default:
         throw new Error();
     };
