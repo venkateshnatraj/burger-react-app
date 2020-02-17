@@ -10,13 +10,22 @@ function BurgerBuilder() {
         Bacon: 0,
         Cheese: 0,
         Meat : 0
-    }
+    }, 
+    ingredientPrice :{
+      Salad : .5,
+      Bacon : 1.0,
+      Cheese: .35,
+      Meat: 1.2
+    },
+    Total: 0
+
   } 
   const globalState = useContext(store);
   const { dispatch } = globalState;
-
+ 
   useEffect(() => {
     dispatch({ type: 'SetIngredients', payload : items })
+    //eslint-disable-next-line 
   }, [])
 
 
