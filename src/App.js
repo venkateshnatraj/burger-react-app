@@ -1,17 +1,18 @@
-import React from 'react';
+import React from 'react'
 import Layout from './components/layout/Layout'
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder'
-import { StateProvider } from  './store/store'
+import { StateProvider } from './store/store'
+
 function App() {
   return (
-    <div >
+    <div>
       <StateProvider>
         <Layout>
-            <BurgerBuilder/>
+          <BurgerBuilder />
         </Layout>
       </StateProvider>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
