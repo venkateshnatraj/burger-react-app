@@ -13,6 +13,13 @@ const StateProvider = ({ children }) => {
     switch (action.type) {
       case 'SetIngredients':
         return { ...storeReducer, ...action.payload }
+      case 'ResetIngredients':
+        const reset = { ...storeReducer }
+        Object.keys(reset.ingredients).forEach((x) => {
+          reset.ingredients[x] = 0
+        })
+        reset.total = 0
+        return { ...storeReducer, ...reset }
       case 'AddIngredients':
         const add = storeReducer.ingredients[action.payload] + 1
         const addState = { ...storeReducer }

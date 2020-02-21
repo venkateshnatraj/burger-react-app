@@ -1,7 +1,9 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useMemo} from 'react'
+import { Button } from 'reactstrap'
 import classes from './BuildControls.module.css'
 import BuildControl from '../BuildControl/BuildControl'
 import { store } from '../../../store/store'
+import Ordermodal from '../../UI/Ordermodal'
 
 const controls = [
   { label: 'Salad', type: 'Salad' },
@@ -10,14 +12,56 @@ const controls = [
   { label: 'Meat', type: 'Meat' }
 ]
 const BuildControls = () => {
-  const { state } = useContext(store)
-  const { total } = state
+  const globalState = useContext(store)
+  const { state, dispatch } = globalState
+
+  const [modal, setModal] = useState(false)
+  const [disableOrder, setdisableOrder] = useState(true)
+  const [total, setTotal] = useState(0)
+
+  const addIngredients = (type) => {
+    dispatch({ type: 'AddIngredients', payload: type })
+  }
+  const removeIngredients = (type) => {
+    dispatch({ type: 'RemoveIngredients', payload: type })
+  }
+
+  // if use useeffect, dispatcher will be called twice when calling add and remove ingreients in the child component
+  useMemo(() => {
+    setTotal(state.total)
+    setdisableOrder(!(state.total > 0))
+  }, [state.total])
+
+  const cancelHandler = () => {
+    dispatch({ type: 'ResetIngredients' })
+    setModal(!modal)
+  }
+  const continueHandler = () => {
+    setModal(!modal)
+  }
+
+  // const cancelHandler = useCallback(() => {
+  //   dispatch({ type: 'ResetIngredients' })
+  //   setModal(!modal)
+  //   },[dispatch])
+
   return (
     <div className={classes.BuildControls}>
-      <p>Current Price :{total}</p>
+      <Ordermodal modal={modal} cancel={cancelHandler} continueNext={continueHandler} />
+      <p>Current Price : {total} </p>
       {controls.map((ctrl) => (
-        <BuildControl key={ctrl.label} label={ctrl.label} type={ctrl.type} />
+        <BuildControl
+          key={ctrl.label}
+          label={ctrl.label}
+          type={ctrl.type}
+          disableCtrl={state.ingredients[ctrl] === 0}
+          add={addIngredients}
+          remove={removeIngredients}
+        />
       ))}
+      <Button disabled={disableOrder} color="primary" size="lg" onClick={() => setModal(!modal)}>
+        Order
+      </Button>
     </div>
   )
 }

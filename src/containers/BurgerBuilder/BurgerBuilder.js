@@ -12,10 +12,10 @@ function BurgerBuilder() {
       Meat: 0
     },
     ingredientPrice: {
-      Salad: 0.5,
-      Bacon: 1.0,
-      Cheese: 0.35,
-      Meat: 1.2
+      Salad: 1,
+      Bacon: 3,
+      Cheese: 2,
+      Meat: 3
     },
     Total: 0
   }

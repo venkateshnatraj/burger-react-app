@@ -1,33 +1,17 @@
-import React, { useContext } from 'react'
+import React from 'react'
+import { Button } from 'reactstrap'
 import classes from './BuildControl.module.css'
-import { store } from '../../../store/store'
 
-const BuildControl = (props) => {
-  const globalState = useContext(store)
-  const { state, dispatch } = globalState
-
-  const disableCtrl = state.ingredients[props.type] === 0
-
-  const addIngredients = (type) => {
-    dispatch({ type: 'AddIngredients', payload: type })
-  }
-  const removeIngredients = (type) => {
-    dispatch({ type: 'RemoveIngredients', payload: type })
-  }
-
+const BuildControl = ({ label, type, disableCtrl, add, remove }) => {
   return (
     <div className={classes.BuildControl}>
-      <div className={classes.Label}>{props.label}</div>
-      <button className={classes.More} onClick={() => addIngredients(props.type)}>
+      <div className={classes.Label}>{label}</div>
+      <Button color="light" onClick={() => add(type)}>
         More
-      </button>
-      <button
-        className={classes.Less}
-        onClick={() => removeIngredients(props.type)}
-        disabled={disableCtrl}
-      >
+      </Button>
+      <Button color="secondary" disabled={disableCtrl} onClick={() => remove(type)}>
         Less
-      </button>
+      </Button>
     </div>
   )
 }
