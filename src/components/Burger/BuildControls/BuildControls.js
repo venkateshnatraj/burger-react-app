@@ -1,4 +1,4 @@
-import React, { useContext, useState, useMemo} from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { Button } from 'reactstrap'
 import classes from './BuildControls.module.css'
 import BuildControl from '../BuildControl/BuildControl'
@@ -26,8 +26,7 @@ const BuildControls = () => {
     dispatch({ type: 'RemoveIngredients', payload: type })
   }
 
-  // if use useeffect, dispatcher will be called twice when calling add and remove ingreients in the child component
-  useMemo(() => {
+  useEffect(() => {
     setTotal(state.total)
     setdisableOrder(!(state.total > 0))
   }, [state.total])
@@ -39,11 +38,6 @@ const BuildControls = () => {
   const continueHandler = () => {
     setModal(!modal)
   }
-
-  // const cancelHandler = useCallback(() => {
-  //   dispatch({ type: 'ResetIngredients' })
-  //   setModal(!modal)
-  //   },[dispatch])
 
   return (
     <div className={classes.BuildControls}>
