@@ -4,6 +4,7 @@ import classes from './BuildControls.module.css'
 import BuildControl from '../BuildControl/BuildControl'
 import { store } from '../../../store/store'
 import Ordermodal from '../../UI/Ordermodal'
+import useIngredients from '../../../store/useIngredients'
 
 const controls = [
   { label: 'Salad', type: 'Salad' },
@@ -13,18 +14,17 @@ const controls = [
 ]
 const BuildControls = () => {
   const globalState = useContext(store)
-  const { state, dispatch } = globalState
+  const { state } = globalState
 
   const [modal, setModal] = useState(false)
   const [disableOrder, setdisableOrder] = useState(true)
   const [total, setTotal] = useState(0)
 
-  const addIngredients = (type) => {
-    dispatch({ type: 'AddIngredients', payload: type })
-  }
-  const removeIngredients = (type) => {
-    dispatch({ type: 'RemoveIngredients', payload: type })
-  }
+  const { add, remove, reset } = useIngredients()
+
+  const addIngredients = (type) => add(type)
+
+  const removeIngredients = (type) => remove(type)
 
   useEffect(() => {
     setTotal(state.total)
@@ -32,7 +32,7 @@ const BuildControls = () => {
   }, [state.total])
 
   const cancelHandler = () => {
-    dispatch({ type: 'ResetIngredients' })
+    reset()
     setModal(!modal)
   }
   const continueHandler = () => {
