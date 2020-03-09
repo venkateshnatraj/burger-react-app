@@ -1,13 +1,16 @@
 import React, { Fragment } from 'react'
 import Logo from '../Logo/logo'
-
-const Toolbar = () => (
+import NavigationItems from './NavigationItems'
+import classes  from './SideDrawer.module.css' 
+import DrawerToggle from './DrawerToggle'
+const Toolbar = (props) => (
   <Fragment>
-    <nav className="navbar navbar-dark bg-primary">
-      <div>Menu</div>
+    <nav style={{backgroundColor : 'burlywood' }} className="navbar navbar-dark">
+      <DrawerToggle open ={props.open}/>
       <Logo />
-      {/* <div>...</div> */}
-      <nav>...</nav>
+      <nav className ={classes.DesktopOnly}>
+        <NavigationItems/>
+      </nav>
     </nav>
   </Fragment>
 )

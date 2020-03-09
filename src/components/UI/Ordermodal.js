@@ -14,7 +14,7 @@ const Ordermodal = ({ modal, cancel, continueNext }) => {
     ))
     return (
       <Fragment>
-        <Modal isOpen={modal} toggle={cancel}>
+        <Modal isOpen={modal} toggle={cancel} centered >
           <ModalHeader toggle={cancel}>Order Summary</ModalHeader>
           <ModalBody>
             <h5>Your delicious Burger with following Ingrdients</h5>
