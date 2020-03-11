@@ -6,7 +6,7 @@ const Ordermodal = ({ modal, cancel, continueNext }) => {
   const { state } = useContext(store)
   return useMemo(() => {
     const items = Object.keys(state.ingredients).map((igkey) => (
-      <p>
+      <p key ={igkey}>
         {igkey} : {state.ingredients[igkey]}
       </p>
     ))
