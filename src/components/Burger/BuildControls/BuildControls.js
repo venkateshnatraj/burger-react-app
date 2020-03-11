@@ -36,24 +36,13 @@ const BuildControls = () => {
     body: JSON.stringify(state)
   }
 
-  const { orderState, fetchData, resetFetch } = useFetch(`${config.baseApiUrl}order.json`, options)
-  const { isLoading, data, error } = orderState
-  const [message, setMessage] = useState()
+  const { orderState, startFetch, resetFetch } = useFetch(`${config.baseApiUrl}order.json`, options)
+  const { message } = orderState
   useEffect(() => {
     setTotal(state.total)
     setdisableOrder(!(state.total > 0))
   }, [state.total])
 
-  useEffect(() => {
-    if (isLoading) {
-      setMessage('Loading....')
-    }
-    if (!isLoading && data) {
-      setMessage('Data saved')
-    }
-    if (isLoading && error) setMessage('Something went wrong')
-    if (!isLoading && !data && !error) setMessage('')
-  }, [isLoading, data, error])
 
   const cancelHandler = () => {
     reset()
@@ -62,7 +51,7 @@ const BuildControls = () => {
   }
 
   const continueHandler = () => {
-    fetchData()
+    startFetch()
     setModal(!modal)
   }
 
