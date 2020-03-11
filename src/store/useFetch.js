@@ -13,7 +13,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         isLoading: true,
-        message:'Loading...'
+        message: 'Loading...'
       }
     case REQUEST_SUCCESSFUL:
       return {
@@ -28,7 +28,7 @@ const reducer = (state, action) => {
         ...state,
         isLoading: false,
         error: action.error,
-        message : 'Something went wrong'
+        message: 'Something went wrong'
       }
     case REQUEST_RESET:
       return {
@@ -36,7 +36,7 @@ const reducer = (state, action) => {
         isLoading: false,
         data: null,
         error: null,
-        message : ''
+        message: ''
       }
 
     // usually I ignore the action if its `type` is not matched here, some people prefer throwing errors here - it's really up to you.
@@ -49,29 +49,28 @@ const useFetch = (url, options) => {
   const [orderState, dispatch] = useReducer(reducer, {
     isLoading: false,
     data: null,
-    error: null, 
-    message : null
+    error: null,
+    message: null
   })
 
-
-  useEffect(()=>{
+  useEffect(() => {
     const fetchData = async () => {
-      if(orderState.isLoading){ 
-      try {
-        const response = await fetch(url, options)
-      
-        if (!response.ok) {
-          throw new Error(`${response.status} ${response.statusText}`)
+      if (orderState.isLoading) {
+        try {
+          const response = await fetch(url, options)
+
+          if (!response.ok) {
+            throw new Error(`${response.status} ${response.statusText}`)
+          }
+          const data = await response.json()
+          dispatch({ type: REQUEST_SUCCESSFUL, data })
+        } catch (e) {
+          dispatch({ type: REQUEST_FAILED, error: e.message })
         }
-        const data = await response.json()
-        dispatch({ type: REQUEST_SUCCESSFUL, data })
-      } catch (e) {
-        dispatch({ type: REQUEST_FAILED, error: e.message })
       }
     }
-  }
     fetchData()
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   },[orderState.isLoading,orderState.data,orderState.error])
 
   const resetFetch = () => {
@@ -79,10 +78,10 @@ const useFetch = (url, options) => {
   }
 
   const startFetch = () => {
-      dispatch({ type: REQUEST_STARTED })
+    dispatch({ type: REQUEST_STARTED })
   }
 
-  return { orderState , resetFetch, startFetch }
+  return { orderState, resetFetch, startFetch }
 }
 
 export default useFetch
