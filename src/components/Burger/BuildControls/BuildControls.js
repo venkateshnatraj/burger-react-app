@@ -5,6 +5,8 @@ import BuildControl from '../BuildControl/BuildControl'
 import { store } from '../../../store/store'
 import Ordermodal from '../../UI/Ordermodal'
 import useIngredients from '../../../store/useIngredients'
+import useFetch from '../../../store/useFetch'
+import config from '../../../config'
 
 const controls = [
   { label: 'Salad', type: 'Salad' },
@@ -26,16 +28,41 @@ const BuildControls = () => {
 
   const removeIngredients = (type) => remove(type)
 
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(state)
+  }
+
+  const { orderState, fetchData, resetFetch } = useFetch(`${config.baseApiUrl}order.json`, options)
+  const { isLoading, data, error } = orderState
+  const [message, setMessage] = useState()
   useEffect(() => {
     setTotal(state.total)
     setdisableOrder(!(state.total > 0))
   }, [state.total])
 
+  useEffect(() => {
+    if (isLoading) {
+      setMessage('Loading....')
+    }
+    if (!isLoading && data) {
+      setMessage('Data saved')
+    }
+    if (isLoading && error) setMessage('Something went wrong')
+    if (!isLoading && !data && !error) setMessage('')
+  }, [isLoading, data, error])
+
   const cancelHandler = () => {
     reset()
+    resetFetch()
     setModal(!modal)
   }
+
   const continueHandler = () => {
+    fetchData()
     setModal(!modal)
   }
 
@@ -56,6 +83,7 @@ const BuildControls = () => {
       <Button disabled={disableOrder} color="primary" size="lg" onClick={() => setModal(!modal)}>
         Order
       </Button>
+      <p>{message}</p>
     </div>
   )
 }

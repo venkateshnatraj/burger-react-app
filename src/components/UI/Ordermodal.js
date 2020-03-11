@@ -2,11 +2,9 @@ import React, { Fragment, useContext, useMemo } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import { store } from '../../store/store'
 
-
-
 const Ordermodal = ({ modal, cancel, continueNext }) => {
   const { state } = useContext(store)
-  return useMemo(()=>{
+  return useMemo(() => {
     const items = Object.keys(state.ingredients).map((igkey) => (
       <p>
         {igkey} : {state.ingredients[igkey]}
@@ -14,7 +12,7 @@ const Ordermodal = ({ modal, cancel, continueNext }) => {
     ))
     return (
       <Fragment>
-        <Modal isOpen={modal} toggle={cancel} centered >
+        <Modal isOpen={modal} toggle={cancel} centered>
           <ModalHeader toggle={cancel}>Order Summary</ModalHeader>
           <ModalBody>
             <h5>Your delicious Burger with following Ingrdients</h5>
@@ -32,6 +30,7 @@ const Ordermodal = ({ modal, cancel, continueNext }) => {
         </Modal>
       </Fragment>
     )
+    // eslint-disable-next-line
   },[modal])
 
 
@@ -63,8 +62,6 @@ const Ordermodal = ({ modal, cancel, continueNext }) => {
   //     </Modal>
   //   </Fragment>
   // )
-
 }
-
 
 export default Ordermodal
