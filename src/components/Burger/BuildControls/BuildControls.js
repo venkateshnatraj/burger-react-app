@@ -7,6 +7,7 @@ import Ordermodal from '../../UI/Ordermodal'
 import useIngredients from '../../../store/useIngredients'
 import useFetch from '../../../store/useFetch'
 import config from '../../../config'
+import Spinners from '../../UI/Spinners'
 
 const controls = [
   { label: 'Salad', type: 'Salad' },
@@ -21,7 +22,6 @@ const BuildControls = () => {
   const [modal, setModal] = useState(false)
   const [disableOrder, setdisableOrder] = useState(true)
   const [total, setTotal] = useState(0)
-
   const { add, remove, reset } = useIngredients()
 
   const addIngredients = (type) => add(type)
@@ -56,6 +56,7 @@ const BuildControls = () => {
 
   return (
     <div className={classes.BuildControls}>
+      <Spinners show={orderState.isLoading} />
       <Ordermodal modal={modal} cancel={cancelHandler} continueNext={continueHandler} />
       <p>Current Price : {total} </p>
       {controls.map((ctrl) => (
@@ -68,7 +69,14 @@ const BuildControls = () => {
           remove={removeIngredients}
         />
       ))}
-      <Button disabled={disableOrder} color="primary" size="lg" onClick={() => setModal(!modal)}>
+      <br />
+      <Button
+        disabled={disableOrder}
+        className={classes.btnlg}
+        color="primary"
+        size="lg"
+        onClick={() => setModal(!modal)}
+      >
         Order
       </Button>
       <p>{message}</p>

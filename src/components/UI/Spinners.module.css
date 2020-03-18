@@ -1,0 +1,110 @@
+.Loader {
+  font-size: 10px;
+  margin: 50px auto;
+  text-indent: -9999em;
+  width: 11em;
+  height: 11em;
+  border-radius: 50%;
+  background: #400000;
+  background: -moz-linear-gradient(left, #400000 10%, rgba(64,0,0, 0) 42%);
+  background: -webkit-linear-gradient(left, #400000 10%, rgba(64,0,0, 0) 42%);
+  background: -o-linear-gradient(left, #400000 10%, rgba(64,0,0, 0) 42%);
+  background: -ms-linear-gradient(left, #400000 10%, rgba(64,0,0, 0) 42%);
+  background: linear-gradient(to right, #400000 10%, rgba(64,0,0, 0) 42%);
+  position: relative;
+  -webkit-animation: load3 1.4s infinite linear;
+  animation: load3 1.4s infinite linear;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+}
+.Loader:before {
+  width: 50%;
+  height: 50%;
+  background: #400000;
+  border-radius: 100% 0 0 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: '';
+}
+.Loader:after {
+  background : transparent;
+  width: 75%;
+  height: 75%;
+  border-radius: 50%;
+  content: '';
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+@-webkit-keyframes load3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.Block {
+  display: none;
+}
+
+.Spinner {
+  position: fixed;
+  margin-top: 400px;
+  top:0;
+  left: 0;
+  z-index: 1050;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  outline: 0;
+  align-items: center;
+  background-color: transparent;
+}
+
+@media (min-width:350px) and (min-height: 400px){
+  .Spinner{
+    margin-top: 250px;
+    margin-left: 220px;
+  }
+}
+
+@media (min-width:500px) and (min-height: 700px){
+  .Spinner{
+    margin-top: 300px;
+    margin-left: 450px;
+  }
+}
+
+@media (min-width:1000px) and (min-height: 700px){
+  .Spinner{
+    margin-left: 550px;
+    margin-top: 400px;
+  }
+}
+
+@media (min-width:1200px) and (min-height: 700px){
+  .Spinner{
+    margin-left: 850px;
+    margin-top: 450px;
+  }
+}
