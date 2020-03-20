@@ -45,9 +45,9 @@ const reducer = (state, action) => {
   }
 }
 
-const useFetch = (url, options) => {
+const useFetch = (url, options, isLoad) => {
   const [orderState, dispatch] = useReducer(reducer, {
-    isLoading: false,
+    isLoading: isLoad,
     data: null,
     error: null,
     message: null

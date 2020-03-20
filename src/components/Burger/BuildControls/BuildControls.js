@@ -36,7 +36,11 @@ const BuildControls = () => {
     body: JSON.stringify(state)
   }
 
-  const { orderState, startFetch, resetFetch } = useFetch(`${config.baseApiUrl}order.json`, options)
+  const { orderState, startFetch, resetFetch } = useFetch(
+    `${config.baseApiUrl}order1.json`,
+    options,
+    false
+  )
   const { message } = orderState
   useEffect(() => {
     setTotal(state.total)

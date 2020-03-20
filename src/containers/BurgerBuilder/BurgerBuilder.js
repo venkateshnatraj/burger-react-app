@@ -2,30 +2,35 @@ import React, { useContext, useEffect, Fragment } from 'react'
 import Burger from '../../components/Burger/Burger'
 import { store } from '../../store/store'
 import BuildControls from '../../components/Burger/BuildControls/BuildControls'
+import useFetch from '../../store/useFetch'
+import config from '../../config'
 
 function BurgerBuilder() {
-  const items = {
-    ingredients: {
-      Salad: 0,
-      Bacon: 0,
-      Cheese: 0,
-      Meat: 0
-    },
-    ingredientPrice: {
-      Salad: 1,
-      Bacon: 3,
-      Cheese: 2,
-      Meat: 3
-    },
-    Total: 0
-  }
   const globalState = useContext(store)
   const { dispatch } = globalState
 
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+
+  const ingredients = useFetch(`${config.baseApiUrl}ingredients.json`, options, true)
+  const ingredientsPrice = useFetch(`${config.baseApiUrl}ingredientPrice.json`, options, true)
+
   useEffect(() => {
-    dispatch({ type: 'SetIngredients', payload: items })
+    if (ingredients.orderState.data && ingredientsPrice.orderState.data) {
+      const items = {
+        ingredients: ingredients.orderState.data[Object.keys(ingredients.orderState.data)],
+        ingredientPrice:
+          ingredientsPrice.orderState.data[Object.keys(ingredientsPrice.orderState.data)],
+        Total: 0
+      }
+      dispatch({ type: 'SetIngredients', payload: items })
+    }
     // eslint-disable-next-line
-  }, [])
+  },[ingredients.orderState.data, ingredientsPrice.orderState.data])
 
   return (
     <Fragment>
