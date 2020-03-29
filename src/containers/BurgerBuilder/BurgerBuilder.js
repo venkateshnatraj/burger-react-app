@@ -7,17 +7,16 @@ import config from '../../config'
 
 function BurgerBuilder() {
   const globalState = useContext(store)
-  const { dispatch } = globalState
+  const { dispatch, state } = globalState
 
-  const options = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }
-
-  const ingredients = useFetch(`${config.baseApiUrl}ingredients.json`, options, true)
-  const ingredientsPrice = useFetch(`${config.baseApiUrl}ingredientPrice.json`, options, true)
+  const isLoading = !(Object.keys(state.ingredients).length > 0)
+  const ingredients = useFetch(`${config.baseApiUrl}ingredients.json`, 'GET', null, isLoading)
+  const ingredientsPrice = useFetch(
+    `${config.baseApiUrl}ingredientPrice.json`,
+    'GET',
+    null,
+    isLoading
+  )
 
   useEffect(() => {
     if (ingredients.orderState.data && ingredientsPrice.orderState.data) {

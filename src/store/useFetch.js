@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from 'react'
+import { useReducer, useEffect, useState } from 'react'
 import 'whatwg-fetch'
 
 const REQUEST_STARTED = 'REQUEST_STARTED'
@@ -21,7 +21,7 @@ const reducer = (state, action) => {
         isLoading: false,
         error: null,
         data: action.data,
-        message: 'Data Saved'
+        message: 'Successful'
       }
     case REQUEST_FAILED:
       return {
@@ -38,31 +38,38 @@ const reducer = (state, action) => {
         error: null,
         message: ''
       }
-
     // usually I ignore the action if its `type` is not matched here, some people prefer throwing errors here - it's really up to you.
     default:
       return state
   }
 }
 
-const useFetch = (url, options, isLoad) => {
+const useFetch = (url, action, data, isLoad) => {
   const [orderState, dispatch] = useReducer(reducer, {
     isLoading: isLoad,
     data: null,
     error: null,
     message: null
   })
+  const [requestData, setRequestData] = useState(data)
 
   useEffect(() => {
     const fetchData = async () => {
       if (orderState.isLoading) {
         try {
+          let options = {
+            method: action,
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+          options =
+            action === 'POST' ? { ...options, ...{ body: JSON.stringify(requestData) } } : options
           const response = await fetch(url, options)
-
           if (!response.ok) {
             throw new Error(`${response.status} ${response.statusText}`)
           }
-          const data = await response.json()
+          data = await response.json()
           dispatch({ type: REQUEST_SUCCESSFUL, data })
         } catch (e) {
           dispatch({ type: REQUEST_FAILED, error: e.message })
@@ -77,7 +84,8 @@ const useFetch = (url, options, isLoad) => {
     dispatch({ type: REQUEST_RESET })
   }
 
-  const startFetch = () => {
+  const startFetch = (input) => {
+    setRequestData(input)
     dispatch({ type: REQUEST_STARTED })
   }
 

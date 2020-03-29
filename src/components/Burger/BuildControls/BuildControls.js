@@ -1,13 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Button } from 'reactstrap'
+import { useHistory } from 'react-router-dom'
 import classes from './BuildControls.module.css'
 import BuildControl from '../BuildControl/BuildControl'
 import { store } from '../../../store/store'
 import Ordermodal from '../../UI/Ordermodal'
 import useIngredients from '../../../store/useIngredients'
-import useFetch from '../../../store/useFetch'
-import config from '../../../config'
-import Spinners from '../../UI/Spinners'
 
 const controls = [
   { label: 'Salad', type: 'Salad' },
@@ -28,20 +26,8 @@ const BuildControls = () => {
 
   const removeIngredients = (type) => remove(type)
 
-  const options = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(state)
-  }
+  const history = useHistory()
 
-  const { orderState, startFetch, resetFetch } = useFetch(
-    `${config.baseApiUrl}order1.json`,
-    options,
-    false
-  )
-  const { message } = orderState
   useEffect(() => {
     setTotal(state.total)
     setdisableOrder(!(state.total > 0))
@@ -49,18 +35,24 @@ const BuildControls = () => {
 
   const cancelHandler = () => {
     reset()
-    resetFetch()
+    // resetFetch()
     setModal(!modal)
   }
 
   const continueHandler = () => {
-    startFetch()
+    const params = ['cheese=1', 'meat=2'] // just for Workout
+    const query = params.join('&')
+    history.push({
+      pathname: '/checkout',
+      search: `?${query}`
+    })
+
     setModal(!modal)
   }
 
   return (
     <div className={classes.BuildControls}>
-      <Spinners show={orderState.isLoading} />
+      {/* <Spinners show={orderState.isLoading} /> */}
       <Ordermodal modal={modal} cancel={cancelHandler} continueNext={continueHandler} />
       <p>Current Price : {total} </p>
       {controls.map((ctrl) => (
@@ -83,7 +75,7 @@ const BuildControls = () => {
       >
         Order
       </Button>
-      <p>{message}</p>
+      {/* <p>{message}</p> */}
     </div>
   )
 }
